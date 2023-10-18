@@ -8,7 +8,7 @@ export interface Employee {
     position: string,
 }
 
-export const getAllBuldings: RequestHandler = async (req, res) => {
+export const getAllConstructions: RequestHandler = async (req, res) => {
     console.log("OIOI")
     const results = await query(`SELECT *
                                  FROM constructions` as any);
