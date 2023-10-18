@@ -20,28 +20,31 @@ export const getEmployeesByConstruction: RequestHandler = async (req, res) => {
                                                on functionaries.id = functionariesConstructions.functionaryId
                                           join construtora.constructions c
                                                on functionariesConstructions.constructionId = c.id
-                                 where constructionId = "${id}"
+                                 where constructionId = "${id}"constructions
     ` as any);
     console.log(results)
     res.send(results)
 }
 
 export const getEmployeesByPeriod: RequestHandler = async (req, res) => {
-    const {id, period} = req.params;
+    const {id: constructionId, period} = req.params;
 
     // @ts-ignore
-    const markedEmployees: Employees[] = await query(`SELECT DISTINCT functionaries.id,
-                                                                      functionaries.name,
-                                                                      functionaries.position,
-                                                                      functionaries.photo_uri
-                                                      from functionaries
-                                                               join construtora.functionariesConstructions
-                                                                    on functionaries.id = functionariesConstructions.functionaryId
-                                                               join construtora.calls AS c on functionaries.id = c.employeeId
-                                                               join construtora.constructions c2
-                                                                    on functionariesConstructions.constructionId = c2.id
-                                                      WHERE c.periodo = '${period}';
-    ` as any);
+    const markedEmployees: Employees[] = await query(
+        `SELECT functionaries.id,
+                functionaries.name,
+                functionaries.position,
+                functionaries.photo_uri
+         FROM functionaries
+                  INNER JOIN construtora.functionariesConstructions
+                             ON functionaries.id = functionariesConstructions.functionaryId
+                  INNER JOIN construtora.calls AS c
+                             ON functionaries.id = c.employeeId
+                  INNER JOIN construtora.constructions c2
+                             ON functionariesConstructions.constructionId = c2.id
+         WHERE c.periodo = '${period}'
+           AND c2.id = ${constructionId}
+        ` as any);
 
     const unmarkedEmployees = await query(`SELECT functionaries.id,
                                                   functionaries.name,
@@ -55,7 +58,7 @@ export const getEmployeesByPeriod: RequestHandler = async (req, res) => {
                                                     LEFT JOIN construtora.calls AS c
                                                               ON functionaries.id = c.employeeId
                                                                   AND c.periodo = "${period}"
-                                           WHERE c2.id = ${id}
+                                           WHERE c2.id = ${constructionId}
                                              AND c.employeeId IS NULL;` as any);
 
     res.send({
@@ -85,5 +88,4 @@ export const registerEmployeeCall: RequestHandler = async (req, res) => {
     for (const user of markedEmployees) {
         await query(`insert into calls (date, constructionId, employeeId, periodo) value ("${date}", "${constructionId}", "${user.id}", "${period}")` as any)
     }
-    ;
 }
