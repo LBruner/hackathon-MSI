@@ -1,5 +1,5 @@
 import React from "react";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import Card from "../components/UI/Card";
 import agendaImg from '../assets/images/register.png'
 
