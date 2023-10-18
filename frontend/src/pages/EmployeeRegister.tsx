@@ -5,12 +5,9 @@ import {ButtonGroup, DropdownButton} from "react-bootstrap";
 import Dropdown from 'react-bootstrap/Dropdown';
 import {useNavigate} from "react-router-dom";
 import {Employee} from "./types";
-import ItemList from "../components/UI/ItemList";
 import axios from "axios";
 import Image from "react-bootstrap/Image";
-import addEmployee from "./AddEmployee";
 import Form from 'react-bootstrap/Form';
-import lodash from 'lodash';
 
 interface Construction {
     name: string,
