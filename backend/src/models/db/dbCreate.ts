@@ -3,90 +3,71 @@ import query from "./dbConnection";
 export const setDB = async () => {
     try {
         await query(`SELECT *
-                     FROM funcionarios` as any);
+                     FROM functionaries` as any);
         console.log("DONE")
     } catch (e) {
         console.log("CREATED")
         await query(`DROP DATABASE IF EXISTS construtora` as any);
         await query(`CREATE DATABASE construtora;` as any);
         await query(`USE construtora` as any);
-        await query(`CREATE TABLE funcionarios
+        await query(`CREATE TABLE functionaries
                      (
-                         id     int AUTO_INCREMENT,
-                         nome   VARCHAR(100) NOT NULL,
-                         funcao VARCHAR(100) NOT NULL,
+                         id       int AUTO_INCREMENT,
+                         name     VARCHAR(100) NOT NULL,
+                         position VARCHAR(100) NOT NULL,
+                         photo_uri varchar(255),
+                         birth_date VARCHAR(255) NOT NULL ,
+                         zip_code VARCHAR(8) NOT NULL ,
                          primary key (id)
                      );
         ` as any);
-        await query(`CREATE TABLE equipes
+        await query(`CREATE TABLE teams
                      (
                          id   int AUTO_INCREMENT,
-                         nome varchar(255),
+                         name varchar(255),
                          primary key (id)
                      );` as any);
-        await query(`CREATE TABLE funcionariosEquipes
+        await query(`CREATE TABLE functionariesTeams
                      (
-                         funcionarioId int,
-                         equipeId      int,
-                         foreign key (funcionarioId) references funcionarios (id),
-                         foreign key (equipeId) references equipes (id)
+                         functionaryId int,
+                         teamId        int,
+                         foreign key (functionaryId) references functionaries (id),
+                         foreign key (teamId) references teams (id)
                      );` as any);
-        await query(`CREATE TABLE telefones
+        await query(`CREATE TABLE telephones
                      (
                          id            int auto_increment,
-                         numero        varchar(20),
-                         funcionarioId int,
+                         number        varchar(20),
+                         functionaryId int,
                          primary key (id),
-                         foreign key (funcionarioId) references funcionarios (id)
+                         foreign key (functionaryId) references functionaries (id)
                      );` as any);
-        await query(`CREATE TABLE obras
+        await query(`CREATE TABLE constructions
                      (
-                         id           int AUTO_INCREMENT,
-                         nome         VARCHAR(100),
-                         data_inicio  DATE,
-                         data_termino DATE,
+                         id         int AUTO_INCREMENT,
+                         name       VARCHAR(100),
+                         photo_uri varchar(255),
+                         start_date VARCHAR(255),
+                         end_date   VARCHAR(255),
                          primary key (id)
                      );` as any);
-        await query(`CREATE TABLE funcionariosObras
+        await query(`CREATE TABLE functionariesConstructions
                      (
-                         funcionarioId int,
-                         obraId        int,
-                         foreign key (funcionarioId) references funcionarios (id),
-                         foreign key (obraId) references obras (id)
+                         functionaryId  int,
+                         constructionId int,
+                         foreign key (functionaryId) references functionaries (id),
+                         foreign key (constructionId) references constructions (id)
                      );` as any);
-        await query(`CREATE TABLE estados
+        await query(`create table calls
                      (
-                         id   int auto_increment,
-                         nome varchar(255),
-                         primary key (id)
-                     );` as any);
-        await query(`CREATE TABLE cidades
-                     (
-                         id       int auto_increment,
-                         nome     varchar(255),
-                         estadoId int,
-                         foreign key (estadoId) references estados (id),
-                         primary key (id)
-                     );` as any);
-        await query(`create table enderecos
-                     (
-                         id          INT AUTO_INCREMENT PRIMARY KEY,
-                         logradouro  VARCHAR(255),
-                         complemento VARCHAR(255),
-                         bairro      VARCHAR(255),
-                         cep         VARCHAR(8),
-                         cidadeId    int,
-                         foreign key (cidadeId) references cidades (id)
-                     );
-        ` as any);
-        await query(`create table chamadas
-                     (
-                         id           INT AUTO_INCREMENT PRIMARY KEY,
-                         data         DATE,
-                         obraId       INT,
-                         hora_inicial TIME,
-                         hora_final   TIME,
-                         FOREIGN KEY (obraId) REFERENCES obras (id)
+                         id             INT AUTO_INCREMENT PRIMARY KEY,
+                         date           VARCHAR(255),
+                         constructionId INT,
+                         employeeId INT,
+                         periodo ENUM('morning', 'afternoon', 'evening'),
+                         FOREIGN KEY (constructionId) REFERENCES constructions (id),
+                         FOREIGN KEY (employeeId) REFERENCES functionaries (id),
+                         primary key (constructionId,employeeId)
                      );` as any);
     }
 }
