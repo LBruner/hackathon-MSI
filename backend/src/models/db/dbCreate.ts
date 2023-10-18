@@ -12,12 +12,12 @@ export const setDB = async () => {
         await query(`USE construtora` as any);
         await query(`CREATE TABLE functionaries
                      (
-                         id       int AUTO_INCREMENT,
-                         name     VARCHAR(100) NOT NULL,
-                         position VARCHAR(100) NOT NULL,
-                         photo_uri varchar(255),
-                         birth_date VARCHAR(255) NOT NULL ,
-                         zip_code VARCHAR(8) NOT NULL ,
+                         id         int AUTO_INCREMENT,
+                         name       VARCHAR(100) NOT NULL,
+                         position   VARCHAR(100) NOT NULL,
+                         photo_uri  varchar(255),
+                         birth_date VARCHAR(255) NOT NULL,
+                         zip_code   VARCHAR(8)   NOT NULL,
                          primary key (id)
                      );
         ` as any);
@@ -55,19 +55,19 @@ export const setDB = async () => {
                      (
                          functionaryId  int,
                          constructionId int,
-                         foreign key (functionaryId) references functionaries (id),
-                         foreign key (constructionId) references constructions (id)
+                         foreign key (functionaryId) references functionaries (id) ON DELETE CASCADE ,
+                         foreign key (constructionId) references constructions (id) ON DELETE CASCADE
                      );` as any);
         await query(`create table calls
                      (
-                         id             INT AUTO_INCREMENT PRIMARY KEY,
+                         id int auto_increment,
                          date           VARCHAR(255),
                          constructionId INT,
                          employeeId INT,
                          periodo ENUM('morning', 'afternoon', 'evening'),
-                         FOREIGN KEY (constructionId) REFERENCES constructions (id),
-                         FOREIGN KEY (employeeId) REFERENCES functionaries (id),
-                         primary key (constructionId,employeeId)
+                         FOREIGN KEY (constructionId) REFERENCES constructions (id)  ON DELETE CASCADE ,
+                         FOREIGN KEY (employeeId) REFERENCES functionaries (id)  ON DELETE CASCADE ,
+                         primary key (id)
                      );` as any);
     }
 }
