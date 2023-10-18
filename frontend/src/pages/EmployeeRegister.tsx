@@ -10,8 +10,9 @@ import Image from "react-bootstrap/Image";
 import Form from 'react-bootstrap/Form';
 
 interface Construction {
-    name: string,
     id: number,
+    name: string,
+    photo_uri: string
 }
 
 const EmployeeRegister: React.FC = _ => {
@@ -69,34 +70,49 @@ const EmployeeRegister: React.FC = _ => {
     };
 
     const onSubmitForm = async () => {
-        await axios.post(`http://localhost:8080/employees/register`, {
-            date: new Date().toLocaleDateString().slice(0, 19),
-            markedEmployees: markedEmployees,
-            constructionId,
-            period
-        })
+        onGoToHandler('/');
+
+        try {
+            await axios.post(`http://localhost:8080/employees/register`, {
+                date: new Date().toLocaleDateString().slice(0, 19),
+                markedEmployees: markedEmployees,
+                constructionId,
+                period
+            });
+        } catch (e) {
+            console.log(e)
+        }
+
     }
 
     return (
         <>
             {employees?.length < 1 && alreadyRegisteredEmployees.length < 1 &&
-                <div className={'container flex-md-grow-1 w-25'}>
-                    {constructions.length > 0 && <div className="container">
-                        {constructions.map(construction =>
-                            <div onClick={onPickConstruction.bind(null, construction.id)} key={construction.id}
-                                 className="card">
-                                <img src="" className="card-img-top" alt="..."></img>
-                                <div className="card-body">
-                                    <p className="card-text">{construction.name}</p>
+                <>
+                    <div className={'container mt-3 mb-3'}>
+                        <h5 className={'alert alert-light'}>Escolha uma obra para fazer a chamada.</h5>
+                    </div>
+                    <div className={'container flex-md-grow-1 w-25'}>
+                        {constructions.length > 0 && <div className="container d-flex gap-3">
+                            {constructions.map(construction =>
+                                <div onClick={onPickConstruction.bind(null, construction.id)} key={construction.id}
+                                     className="card">
+                                    <img src={construction.photo_uri} className="card-img-top rounded-1" alt="..."></img>
+                                    <div className="card-body">
+                                        <h4 className="card-text text-center link-dark">{construction.name}</h4>
+                                    </div>
                                 </div>
-                            </div>
-                        )}
-                    </div>}
-                    {constructions.length === 0 &&
-                        <div className="container">
-                            <p>Você não possui obras...</p>
+                            )}
                         </div>}
-                </div>
+                        {constructions.length === 0 &&
+                            <div className="container text-center p-5">
+                                <h5>Você não possui obras... Que tal adicionar uma?</h5>
+                                <button onClick={onGoToHandler.bind(null, '/addConstruction')}
+                                        className={'btn btn-primary'}>Adicionar obras
+                                </button>
+                            </div>}
+                    </div>
+                </>
             }
             <Modal
                 show={show}
@@ -121,15 +137,6 @@ const EmployeeRegister: React.FC = _ => {
                             <Dropdown.Item eventKey="2"
                                            onClick={onSelectMethod.bind(null, 'evening')}>Noite</Dropdown.Item>
                         </DropdownButton>
-                        <DropdownButton className={'p-2'}
-                                        as={ButtonGroup}
-                                        title="Por equipe"
-                                        id="bg-vertical-dropdown-1"
-                        >
-                            <Dropdown.Item eventKey="1">Manhã</Dropdown.Item>
-                            <Dropdown.Item eventKey="2">Tarde</Dropdown.Item>
-                            <Dropdown.Item eventKey="2">Noite</Dropdown.Item>
-                        </DropdownButton>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
@@ -139,49 +146,57 @@ const EmployeeRegister: React.FC = _ => {
                 </Modal.Footer>
             </Modal>
             {employees!.length > 0 && <>
-                <ul className="list-group">
-                    {employees.map((employee, index) => {
-                            return <li className="list-group-item  d-flex" key={index}>
-                                <div className={'container align-items-center d-flex flex-row'}>
-                                    <Image className={'img'} width={'50px'} height={'60rem'} src={employee.photo_uri}
-                                           thumbnail></Image>
-                                    <div className="container d-flex p-2 flex-column w-25">
-                                        <h3 className={'center'}>{employee.name}</h3>
-                                        <p className={'center'}>Setor: {employee.position}</p>
+                <div className={'container mb-5 mt-5'}>
+                    <h3 className={'alert alert-light'}>Selecione os funcionários que compareceram</h3>
+                    <ul className="list-group w-100 d-flex align-items-center">
+                        {employees.map((employee, index) => {
+                                return <li className="list-group-item  d-flex w-100" key={index}>
+                                    <div className={'container align-items-center d-flex flex-row'}>
+                                        <Image className={'img'} width={'50px'} height={'60rem'} src={employee.photo_uri}
+                                               thumbnail></Image>
+                                        <div className="container d-flex p-2 flex-column w-25">
+                                            <h3 className={'center'}>{employee.name}</h3>
+                                            <p className={'center'}>Setor: {employee.position}</p>
+                                        </div>
+                                        <div className={'container d-flex align-items-center'}>
+                                            <label className={'m-2'}>Compareceu?</label>
+                                            <Form.Check className={'form-check form-check-label'}
+                                                        onClick={addMarkedEmployee.bind(null, employee)}
+                                                        type={'checkbox'}/>
+                                        </div>
                                     </div>
-                                    <div className={'container d-flex align-items-center'}>
-                                        <label className={'m-2'}>Compareceu?</label>
-                                        <Form.Check className={'form-check form-check-label'}
-                                                    onClick={addMarkedEmployee.bind(null, employee)}
-                                                    type={'checkbox'}/>
-                                    </div>
-                                </div>
-                            </li>
-                        }
-                    )}
-                </ul>
+                                </li>
+                            }
+                        )}
+                    </ul>
+                    <button disabled={markedEmployees.length === 0} onClick={onSubmitForm}
+                            className="btn btn-primary ">Fechar Chamada
+                    </button>
+                </div>
             </>
             }
             {alreadyRegisteredEmployees!.length > 0 && <>
-                <h2>Compareceram</h2>
-                <ul className="list-group">
-                    {alreadyRegisteredEmployees.map((employee, index) => {
-                            return <li className="list-group-item  d-flex " key={index}>
-                                <div className={'container align-items-center d-flex flex-row'}>
-                                    <Image className={'img'} width={'50px'} height={'60rem'} src={employee.photo_uri}
-                                           thumbnail></Image>
-                                    <div className="container d-flex p-2 flex-column">
-                                        <h3 className={'center'}>{employee.name}</h3>
-                                        <p className={'center'}>Setor: {employee.position}</p>
+                <div className={'container mb-5 mt-5'}>
+                    <h3 className={'alert alert-light'}>Funcionários com presença</h3>
+                    <ul className="list-group">
+                        {alreadyRegisteredEmployees.map((employee, index) => {
+                                return <li className="list-group-item  d-flex " key={index}>
+                                    <div className={'container align-items-center d-flex flex-row'}>
+                                        <Image className={'img'} width={'50px'} height={'60rem'} src={employee.photo_uri}
+                                               thumbnail></Image>
+                                        <div className="container d-flex p-2 flex-column">
+                                            <h3 className={'center'}>{employee.name}</h3>
+                                            <p className={'center'}>Setor: {employee.position}</p>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                        }
-                    )}
-                </ul>
+                                </li>
+                            }
+                        )}
+                    </ul>
+                </div>
             </>
+
             }
-            <button onClick={onSubmitForm} className="btn btn-primary p-3">Fechar Chamada</button>
         </>
     )
 }

@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import ItemList from "../components/UI/ItemList";
-import Card from "../components/UI/Card";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {Employee} from "./types";
@@ -26,19 +25,16 @@ const Employees: React.FC = _ => {
     }
 
     return (
-        <div className={'d-flex justify-content-center align-items-center'}>
+        <div className={'d-flex justify-content-center align-items-center flex-column mt-5 '}>
             <div className={'container flex-md-grow-1'}>
                 {allEmployees.length > 0 && <div className="container">
                     <ItemList items={allEmployees}/>
                 </div>}
-                {allEmployees.length === 0 &&
-                    <div className="container">
-                        <p>Você não possui funcionários</p>
-                    </div>}
             </div>
-            <div className="container w-25 p-4">
-                <Card img={'fsaf'} title={'Adicionar funcionário'} description={'Adicione funcionários'}
-                      fn={onGoToPath.bind(null, '/addEmployee')} buttonTxt={'Adicionar'}/>
+            <div className="container text-center p-3 mt-5">
+                <h5>Adicione novos funcionários</h5>
+                <button onClick={onGoToPath.bind(null, '/addEmployee')} className={'btn btn-primary'}>Adicionar</button>
+
             </div>
         </div>
     )
