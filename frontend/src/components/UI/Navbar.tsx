@@ -17,9 +17,6 @@ const Navbar: React.FC = _ => {
                     <button onClick={onNavigateTo.bind(null, '/employeeRegister')} className={'btn'}>
                         <a className="navbar-brand" href="#">Chamada</a>
                     </button>
-                    <button onClick={onNavigateTo.bind(null, '/teams')} className={'btn'}>
-                        <a className="navbar-brand" href="#">Equipes</a>
-                    </button>
                     <button onClick={onNavigateTo.bind(null, '/employees')} className={'btn'}>
                         <a className="navbar-brand" href="#">Funcionários</a>
                     </button>
