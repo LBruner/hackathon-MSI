@@ -170,7 +170,7 @@ const EmployeeRegister: React.FC = _ => {
                         )}
                     </ul>
                     <button disabled={markedEmployees.length === 0} onClick={onSubmitForm}
-                            className="btn btn-primary ">Fechar Chamada
+                            className="btn btn-primary mt-4">Fechar Chamada
                     </button>
                 </div>
             </>
