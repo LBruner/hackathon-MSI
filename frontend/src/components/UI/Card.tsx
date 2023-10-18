@@ -8,12 +8,13 @@ interface CardProps {
     img: any,
     buttonTxt: string,
     fn: () => void;
+    classes?: string
 }
 
-const Card: React.FC<CardProps> = ({title, description, img, fn, buttonTxt}) => {
+const Card: React.FC<CardProps> = ({title, description, img, fn, buttonTxt, classes}) => {
     return (
-        <BootstrapCard>
-            <BootstrapCard.Img variant={'bottom'} src={img}/>
+        <BootstrapCard className={classes}>
+            <BootstrapCard.Img variant={'bottom'} className={''} style={{height: '40rem'}} src={img}/>
             <BootstrapCard.Body>
                 <BootstrapCard.Title>{title}</BootstrapCard.Title>
                 <BootstrapCard.Text>

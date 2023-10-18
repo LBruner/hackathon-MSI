@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {Employee} from "./types";
+import Image from "react-bootstrap/Image";
 
 const AddConstructions: React.FC = _ => {
     const navigate = useNavigate();
@@ -61,6 +62,7 @@ const AddConstructions: React.FC = _ => {
                         <ul className="container list-group">
                             {allEmployees.map(employee => <li key={employee.id}
                                                               className={'list-group-item d-flex align-items-center'}>
+                                <Image width={'50px'} height={'60rem'} src={employee.photo_uri} thumbnail></Image>
                                 <span className={'p-2'}>{employee.name}</span>
                                 <span className={'p-2'}>{employee.position}</span>
                                 <Form.Check onClick={addEmployee.bind(null, employee)}
