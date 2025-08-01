@@ -1,5 +1,6 @@
 ## Apresentação do Projeto 👷
 
+
 Este protótipo de uma aplicação, cuja principal função é fazer a **chamada de um grupo de funcionários**, foi desenvolvido para o hackathon da [Fatec Ourinhos](https://www.fatecourinhos.edu.br/), em conjunto com a empresa [MSI Soluções](https://msisolucoes.com.br/). Tínhamos 48 horas para desenvolver um projeto com as seguintes instruções:
 
 ------
@@ -35,7 +36,7 @@ A função de chamada dentro de uma empresa é utilizada para marcar a presença
 Antes de tudo, é preciso ter obras e clientes para gerenciá-los. Meu sistema guia durante todos esses passos. Após a criação de ambos, podemos realizar a chamada através de um período. Assim que finalizado, podemos voltar à chamada de um período e, além de adicionar novas presenças, ver quais funcionários já foram marcados como presentes.
 
 ### Desafios e Soluções 📈
-
+ 
 O maior desafio foi gerenciar o tempo e minha ambição em criar algo mais complexo e ter que deixar isso de lado para garantir que eu entregasse algo, mesmo que menor, bem feito. Em segundo lugar, minha maior dificuldade foi gerenciar as consultas ao banco de dados e cruzar as informações de várias tabelas ao mesmo tempo. Com um pouco de paciência, tudo deu certo.
 
 ### Próximos Passos 🚀
