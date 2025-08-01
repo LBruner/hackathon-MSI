@@ -1,5 +1,4 @@
-## Apresentação do Projeto 👷
-
+## Apresentação do Projeto 
 
 Este protótipo de uma aplicação, cuja principal função é fazer a **chamada de um grupo de funcionários**, foi desenvolvido para o hackathon da [Fatec Ourinhos](https://www.fatecourinhos.edu.br/), em conjunto com a empresa [MSI Soluções](https://msisolucoes.com.br/). Tínhamos 48 horas para desenvolver um projeto com as seguintes instruções:
 
